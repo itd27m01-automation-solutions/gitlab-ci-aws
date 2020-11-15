@@ -13,7 +13,6 @@ prod-окружение предоставляет сервис непрерыв
 затем сервисы хранения данных приложения GitLab (PostgreSQL и Redis), затем серверы (EC2 инстансы) приложения GitLab.
 
 ![Alt text](./graph.svg)
-<img src="./graph.svg">
 
 ## Terragrunt
 
