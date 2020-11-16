@@ -1,3 +1,7 @@
+locals {
+  env_vars = yamldecode(file(find_in_parent_folders("env_vars.yaml")))
+}
+
 terraform {
   source = "../../../../..//modules/gitlab-ci-aws-iam"
 }
@@ -7,5 +11,5 @@ include {
 }
 
 inputs = {
-  environment = "dev"
+  environment = "${local.env_vars.environment}"
 }

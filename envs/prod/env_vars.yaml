@@ -1,0 +1,8 @@
+---
+environment: "prod"
+aws_region: "us-east-1"
+aws_profile: "gitlab-ci-aws"
+aws_dynamodb_table: "gitlab-ci-aws"
+subnet_number: "1"
+aws_acm_cert: "arn:aws:acm:us-east-1:928913696904:certificate/079a3150-4ff3-4c35-9363-b3c63e4337ce"
+availability_zones: ["us-east-1a", "us-east-1b"]

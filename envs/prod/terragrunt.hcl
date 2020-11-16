@@ -1,3 +1,7 @@
+locals {
+  env_vars = yamldecode(file("env_vars.yaml"))
+}
+
 remote_state {
   backend = "s3"
   generate = {
@@ -5,12 +9,12 @@ remote_state {
     if_exists = "overwrite"
   }
   config = {
-    bucket         = "gitlab-ci-aws"
-    key            = "prod/${path_relative_to_include()}/terraform.tfstate"
-    region         = "us-east-2"
+    bucket         = "${local.env_vars.aws_profile}-terraform-state"
+    key            = "${local.env_vars.environment}/${path_relative_to_include()}/terraform.tfstate"
+    region         = "${local.env_vars.aws_region}"
     encrypt        = true
-    dynamodb_table = "gitlab-ci-aws"
-    profile        = "gitlab-ci-aws"
+    dynamodb_table = "${local.env_vars.aws_dynamodb_table}"
+    profile        = "${local.env_vars.aws_profile}"
   }
 }
 
@@ -19,8 +23,8 @@ generate "provider" {
   if_exists = "overwrite_terragrunt"
   contents = <<EOF
 provider "aws" {
-  region  = "us-east-1"
-  profile = "gitlab-ci-aws"
+  region  = "${local.env_vars.aws_region}"
+  profile = "${local.env_vars.aws_profile}"
 }
 EOF
 }
