@@ -6,8 +6,8 @@ on:
       - master
 
 env:
-  tf_version: 'v0.13.5'
-  tg_version: 'v0.26.2'
+  tf_version: '0.13.5'
+  tg_version: '0.26.2'
   tf_working_dir: 'envs/prod'
 jobs:
   terragrunt:
