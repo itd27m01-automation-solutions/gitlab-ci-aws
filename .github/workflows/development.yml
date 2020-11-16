@@ -6,9 +6,12 @@ on:
       - master
 
 env:
-  tf_version: '0.13.5'
   tg_version: '0.26.2'
-  tf_working_dir: 'envs/dev'
+defaults:
+  run:
+    shell: bash
+    working-directory: 'envs/dev'
+
 jobs:
   terragrunt:
     name: 'Terragrunt Apply'
@@ -16,27 +19,17 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v0.1.0
+        with:
+          terragrunt_version: ${{ env.tg_version }}
       - name: 'Terragrunt Apply'
-        uses: the-commons-project/terragrunt-github-actions@master
-        with:
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_subcommand: 'apply'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
+        run: terragrunt apply-all --terragrunt-non-interactive 2>&1 | grep -v 'terragrunt'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: 'Terragrunt Destroy'
-        uses: the-commons-project/terragrunt-github-actions@master
-        with:
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_subcommand: 'destroy'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: true
+        run: terragrunt destroy-all --terragrunt-non-interactive 2>&1 | grep -v 'terragrunt'
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
