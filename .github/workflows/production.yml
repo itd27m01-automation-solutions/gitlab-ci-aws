@@ -3,7 +3,7 @@ name: 'Runs production environment'
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   tf_version: 'v0.13.5'
