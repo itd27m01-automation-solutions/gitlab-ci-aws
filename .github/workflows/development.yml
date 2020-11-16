@@ -37,7 +37,12 @@ jobs:
                 StrictHostKeyChecking no
                 UserKnownHostsFile=/dev/null
       - name: 'Configure AWS Credentials'
-        run: mkdir -p ~/.aws ; echo ${{ env.aws_profile }} > ~/.aws/credentials
+        run: |
+          mkdir -p ~/.aws ;
+          cat << EOF > ~/.aws/credentials
+          ${{ env.aws_profile }}
+          EOF;
+          chmod 0600 ~/.aws/credentials
       - name: 'Setup Terragrunt'
         uses: autero1/action-terragrunt@v0.1.0
         with:
