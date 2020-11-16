@@ -7,7 +7,7 @@ on:
 
 env:
   tg_version: '0.26.2'
-  aws_profile: |
+  aws_profile: |-
     [gitlab-ci-aws]
     region=us-east-1
     output=json
@@ -49,5 +49,9 @@ jobs:
           terragrunt_version: ${{ env.tg_version }}
       - name: 'Terragrunt Validate'
         run: terragrunt validate-all --terragrunt-non-interactive
+        env:
+          TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
       - name: 'Terragrunt Plan'
         run: terragrunt plan-all --terragrunt-non-interactive
+        env:
+          TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
