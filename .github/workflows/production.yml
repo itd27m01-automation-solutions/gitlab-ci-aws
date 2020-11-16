@@ -21,7 +21,7 @@ defaults:
 
 jobs:
   terragrunt:
-    name: 'Terragrunt Validate'
+    name: 'Terragrunt Apply'
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
