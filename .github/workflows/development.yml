@@ -1,7 +1,7 @@
-name: 'Runs production environment'
+name: 'Validates terraform code against prod environment'
 
 on:
-  push:
+  pull_request:
     branches:
       - master
 
@@ -49,7 +49,11 @@ jobs:
         uses: autero1/action-terragrunt@v0.1.0
         with:
           terragrunt_version: ${{ env.tg_version }}
-      - name: 'Terragrunt Apply'
-        run: terragrunt apply-all --terragrunt-non-interactive
+      - name: 'Terragrunt Validate'
+        run: terragrunt validate-all --terragrunt-non-interactive
+        env:
+          TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
+      - name: 'Terragrunt Plan'
+        run: terragrunt plan-all --terragrunt-non-interactive
         env:
           TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
