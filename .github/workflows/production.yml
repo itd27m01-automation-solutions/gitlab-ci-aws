@@ -6,9 +6,12 @@ on:
       - master
 
 env:
-  tf_version: '0.13.5'
   tg_version: '0.26.2'
-  tf_working_dir: 'envs/prod'
+defaults:
+  run:
+    shell: bash
+    working-directory: 'envs/prod'
+
 jobs:
   terragrunt:
     name: 'Terragrunt Apply'
@@ -16,14 +19,12 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: 'Terragrunt Apply'
-        uses: the-commons-project/terragrunt-github-actions@master
+      - name: Setup Terragrunt
+        uses: autero1/action-terragrunt@v0.1.0
         with:
-          tf_actions_version: ${{ env.tf_version }}
-          tg_actions_version: ${{ env.tg_version }}
-          tf_actions_subcommand: 'apply'
-          tf_actions_working_dir: ${{ env.tf_working_dir }}
-          tf_actions_comment: false
+          terragrunt_version: ${{ env.tg_version }}
+      - name: 'Terragrunt Apply'
+        run: terragrunt apply-all --terragrunt-non-interactive
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
