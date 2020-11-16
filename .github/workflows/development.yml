@@ -19,7 +19,16 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-      - name: Setup Terragrunt
+      - name: 'Install SSH key'
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_KEY }}
+          known_hosts: ${{ secrets.KNOWN_HOSTS }}
+          config: |
+            Host *
+                StrictHostKeyChecking no
+                UserKnownHostsFile=/dev/null
+      - name: 'Setup Terragrunt'
         uses: autero1/action-terragrunt@v0.1.0
         with:
           terragrunt_version: ${{ env.tg_version }}
