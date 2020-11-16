@@ -21,7 +21,7 @@ jobs:
         with:
           tf_actions_version: ${{ env.tf_version }}
           tg_actions_version: ${{ env.tg_version }}
-          tf_actions_subcommand: 'apply-all --terragrunt-non-interactive'
+          tf_actions_subcommand: 'apply'
           tf_actions_working_dir: ${{ env.tf_working_dir_dev }}
           tf_actions_comment: false
         env:
