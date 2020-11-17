@@ -17,7 +17,7 @@ Ansible плейбук для конфигурации инсталляции Gi
 ```
 
 Во время сбора инвентаря, ansible формирует группы для указанных тегов, что позволяет разделять разработку и
-основной запуск, а также разделить plays в основном плейбке.
+основной запуск, а также разделить plays в основном плейбуке.
 
 ## Группы GitLab приложения
 
@@ -38,7 +38,7 @@ Ansible плейбук для конфигурации инсталляции Gi
 Пример запуска плейбука:
 
 ```
-ansible-playbook gitlab.yml --limit gitaly --extra-vars "@bastion_ssh_args.yml" 
+ansible-playbook gitlab.yml --limit gitaly:&prod --extra-vars "@bastion_ssh_args.yml"
 
 PLAY [Configure app servers] *************************************************************************************
 skipping: no hosts matched
