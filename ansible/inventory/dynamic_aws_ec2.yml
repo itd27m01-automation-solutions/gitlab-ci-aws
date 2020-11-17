@@ -1,0 +1,17 @@
+plugin: aws_ec2
+boto_profile: gitlab-ci-aws
+regions:
+  - us-east-1
+
+filters:
+  tag:Application: gitlab
+
+hostnames:
+  - tag:Name
+
+keyed_groups:
+  - key: tags.Role
+    separator: ''
+
+compose:
+  ansible_host: private_ip_address
