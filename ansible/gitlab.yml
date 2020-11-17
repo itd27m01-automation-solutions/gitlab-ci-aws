@@ -1,4 +1,6 @@
 ---
+- import_playbook: terraform_output.yml
+
 - name: Configure app servers
   hosts: app
   tasks:
