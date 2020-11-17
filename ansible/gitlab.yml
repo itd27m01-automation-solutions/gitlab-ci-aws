@@ -1,0 +1,15 @@
+---
+- name: Configure app servers
+  hosts: app
+  tasks:
+    - ping:
+
+- name: Configure gitaly servers
+  hosts: gitaly
+  tasks:
+    - ping:
+
+- name: Configure runner servers
+  hosts: runner
+  tasks:
+    - ping:
