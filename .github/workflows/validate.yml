@@ -1,4 +1,4 @@
-name: 'Validates terraform code against prod environment'
+name: 'validate'
 
 on:
   pull_request:

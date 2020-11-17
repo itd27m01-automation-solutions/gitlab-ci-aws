@@ -1,4 +1,4 @@
-name: 'Runs production environment'
+name: 'apply'
 
 on:
   push:
