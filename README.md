@@ -1,5 +1,7 @@
 # "Live" репозиторий для инсталляции GitLab CI в AWS
 
+![validate](https://github.com/itd27m01-automation-solutions/gitlab-ci-aws/workflows/validate/badge.svg)
+
 Инфраструктура инсталляции GitLab в AWS разделена на два окружения - dev и prod.
 Окружение dev используется для отладки и тестирования инфраструктурного кода (Terraform и Ansible),
 prod-окружение предоставляет сервис непрерывной интеграции командам разработки.
