@@ -1,2 +1,0 @@
----
-ansible_ssh_args: "-o ServerAliveInterval=300 -o ServerAliveCountMax=5 -o ProxyCommand='ssh -W %h:%p -q ubuntu@{{ hostvars[groups['bastion'][0]].public_ip_address }}'"

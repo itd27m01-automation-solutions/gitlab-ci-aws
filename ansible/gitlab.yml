@@ -1,17 +1,20 @@
 ---
-- import_playbook: terraform_output.yml
+- name: Setup facts for future usage
+  hosts: all
+  strategy: free
 
 - name: Configure app servers
   hosts: app
-  tasks:
-    - ping:
+  serial: 1
+  roles:
+    - ansible-gitlab-ci-aws-app
 
 - name: Configure gitaly servers
   hosts: gitaly
-  tasks:
-    - ping:
+  roles:
+    - ansible-gitlab-ci-aws-gitaly
 
 - name: Configure runner servers
   hosts: runner
-  tasks:
-    - ping:
+  roles:
+    - ansible-gitlab-ci-aws-runner

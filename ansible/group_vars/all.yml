@@ -1,0 +1,14 @@
+---
+aws_profile: 'gitlab-ci-aws'
+aws_region: 'us-east-1'
+
+# Installation prefix used for s3 buckets for example
+gitlab_installation_prefix: '{{ tags.Environment }}-gitlab-ci-aws'
+
+# Connection params through bastion host
+ansible_ssh_args: "-o ServerAliveInterval=300 -o ServerAliveCountMax=5 -o ProxyCommand='ssh -W %h:%p -q ubuntu@{{ hostvars[groups['bastion'][0]].public_ip_address }}'"
+
+# Gitlab Common params
+gitlab_access_url: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/url', aws_profile=aws_profile ) }}"
+gitlab_regis_endpoint: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/redis/endpoint', aws_profile=aws_profile ) }}"
+gitlab_token: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/token', aws_profile=aws_profile ) }}"

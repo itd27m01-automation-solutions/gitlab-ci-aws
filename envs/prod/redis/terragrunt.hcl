@@ -3,7 +3,7 @@ locals {
 }
 
 terraform {
-  source = "git@github.com:itd27m01-automation-solutions/gitlab-ci-aws-redis.git?ref=0.1.1"
+  source = "git@github.com:itd27m01-automation-solutions/gitlab-ci-aws-redis.git?ref=0.2.4"
 }
 
 include {
