@@ -1,3 +1,14 @@
 ---
 collections:
   - name: amazon.aws
+
+roles:
+  - name: ansible-gitlab-ci-aws-app
+    src: git+https://github.com/itd27m01-automation-solutions/ansible-gitlab-ci-aws-app.git
+    version: 0.1.0
+  - name: ansible-gitlab-ci-aws-gitaly
+    src: git+https://github.com/itd27m01-automation-solutions/ansible-gitlab-ci-aws-gitaly.git
+    version: 0.1.0
+  - name: ansible-gitlab-ci-aws-runner
+    src: git+https://github.com/itd27m01-automation-solutions/ansible-gitlab-ci-aws-runner.git
+    version: 0.1.0

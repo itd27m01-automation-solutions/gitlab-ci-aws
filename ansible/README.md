@@ -38,7 +38,7 @@ Ansible плейбук для конфигурации инсталляции Gi
 Пример запуска плейбука:
 
 ```
-ansible-playbook gitlab.yml --limit gitaly:&prod --extra-vars "@bastion_ssh_args.yml"
+ansible-playbook gitlab.yml --limit gitaly:&prod
 
 PLAY [Configure app servers] *************************************************************************************
 skipping: no hosts matched

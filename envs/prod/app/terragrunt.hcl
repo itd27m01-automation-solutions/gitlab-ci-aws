@@ -3,7 +3,7 @@ locals {
 }
 
 terraform {
-  source = "git@github.com:itd27m01-automation-solutions/gitlab-ci-aws-app.git?ref=0.1.2"
+  source = "git@github.com:itd27m01-automation-solutions/gitlab-ci-aws-app.git?ref=0.4.1"
 }
 
 include {
@@ -20,6 +20,8 @@ dependency "iam" {
 
 inputs = {
   environment = "${local.env_vars.environment}"
+
+  gitlab_app_flavor = "t3.xlarge"
 
   gitlab_vpc_id           = dependency.vpc.outputs.vpc_id
   gitlab_private_subnets  = dependency.vpc.outputs.gitlab_private_subnets

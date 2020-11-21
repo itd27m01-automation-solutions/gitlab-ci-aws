@@ -1,0 +1,6 @@
+---
+# RDS instance access params
+gitlab_db_instance_address: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/rds/address', aws_profile=aws_profile ) }}"
+gitlab_db_instance_username: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/rds/username', aws_profile=aws_profile ) }}"
+gitlab_db_instance_password: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/rds/password', aws_profile=aws_profile ) }}"
+gitlab_db: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/rds/db', aws_profile=aws_profile ) }}"

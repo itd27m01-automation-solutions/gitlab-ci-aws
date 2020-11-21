@@ -1,0 +1,8 @@
+---
+gitlab_runner_flavor: 't3.xlarge'
+gitlab_runner_s3_bucket: 'gitlab-runner-cache'
+
+gitlab_runner_access_key: "{{ lookup('env', 'AWS_ACCESS_KEY_ID') }}"
+gitlab_runner_secret_key: "{{ lookup('env', 'AWS_SECRET_ACCESS_KEY') }}"
+
+gitlab_access_url: "{{ lookup('aws_ssm', '/gitlab/'~ tags.Environment ~'/url-internal', aws_profile=aws_profile ) }}"
