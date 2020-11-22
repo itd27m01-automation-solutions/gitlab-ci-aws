@@ -5,15 +5,6 @@ on:
     branches:
       - master
 
-env:
-  tg_version: '0.26.2'
-  aws_profile: |-
-    [gitlab-ci-aws]
-    region=us-east-1
-    output=json
-    aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
-    aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
 jobs:
   terragrunt:
     name: 'Terragrunt Validate'
@@ -24,6 +15,14 @@ jobs:
         working-directory: 'envs/prod'
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      tg_version: '0.26.2'
+      aws_profile: |-
+        [gitlab-ci-aws]
+        region=us-east-1
+        output=json
+        aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
@@ -52,10 +51,12 @@ jobs:
         run: terragrunt validate-all --terragrunt-non-interactive
         env:
           TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
+          TF_VAR_gitlab_token: ${{ secrets.TF_VAR_GITLAB_TOKEN }}
       - name: 'Terragrunt Plan'
         run: terragrunt plan-all --terragrunt-non-interactive
         env:
           TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
+          TF_VAR_gitlab_token: ${{ secrets.TF_VAR_GITLAB_TOKEN }}
 
   ansible:
     name: 'Ansible Lint'
@@ -71,25 +72,6 @@ jobs:
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
-
-      - name: 'Install SSH key'
-        uses: shimataro/ssh-key-action@v2
-        with:
-          key: ${{ secrets.SSH_KEY }}
-          known_hosts: |
-            github.com ssh-rsa AAAAB3NzaC1yc2EAAAABIwAAAQEAq2A7hRGmdnm9tUDbO9IDSwBK6TbQa+PXYPCPy6rbTrTtw7PHkccKrpp0yVhp5HdEIcKr6pLlVDBfOLX9QUsyCOV0wzfjIJNlGEYsdlLJizHhbn2mUjvSAHQqZETYP81eFzLQNnPHt4EVVUh7VfDESU84KezmD5QlWpXLmvU31/yMf+Se8xhHTvKSCZIFImWwoG6mbUoWf9nzpIoaSjB+weqqUUmpaaasXVal72J+UX2B+2RPW3RcT0eOzQgqlJL3RKrTJvdsjE3JEAvGq3lGHSZXy28G3skua2SmVi/w4yCE6gbODqnTWlg7+wC604ydGXA8VJiS5ap43JXiUFFAaQ==
-          config: |
-            Host *
-                StrictHostKeyChecking no
-                UserKnownHostsFile=/dev/null
-
-      - name: 'Configure AWS Credentials'
-        run: |
-          mkdir -p ~/.aws ;
-          cat << EOF > ~/.aws/credentials
-          ${{ env.aws_profile }}
-          EOF;
-          chmod 0600 ~/.aws/credentials
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
