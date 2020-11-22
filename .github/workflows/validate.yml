@@ -22,7 +22,6 @@ jobs:
         output=json
         aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
         aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
@@ -41,7 +40,7 @@ jobs:
           mkdir -p ~/.aws ;
           cat << EOF > ~/.aws/credentials
           ${{ env.aws_profile }}
-          EOF;
+          EOF
           chmod 0600 ~/.aws/credentials
       - name: 'Setup Terragrunt'
         uses: autero1/action-terragrunt@v0.1.0
