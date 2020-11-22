@@ -43,7 +43,7 @@ jobs:
           mkdir -p ~/.aws ;
           cat << EOF > ~/.aws/credentials
           ${{ env.aws_profile }}
-          EOF;
+          EOF
           chmod 0600 ~/.aws/credentials
       - name: 'Setup Terragrunt'
         uses: autero1/action-terragrunt@v0.1.0
@@ -82,12 +82,13 @@ jobs:
                 StrictHostKeyChecking no
                 UserKnownHostsFile=/dev/null
       - name: 'Configure AWS Credentials'
-        run: |
+        run: |-
           mkdir -p ~/.aws ;
           cat << EOF > ~/.aws/credentials
           ${{ env.aws_profile }}
-          EOF;
+          EOF
           chmod 0600 ~/.aws/credentials
+          head -n3 ~/.aws/credentials
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v2
         with:
