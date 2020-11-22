@@ -5,26 +5,24 @@ on:
     branches:
       - master
 
-env:
-  tg_version: '0.26.2'
-  aws_profile: |-
-    [gitlab-ci-aws]
-    region=us-east-1
-    output=json
-    aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
-    aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-
-defaults:
-  run:
-    shell: bash
-    working-directory: 'envs/prod'
-
 jobs:
   terragrunt:
     name: 'Terragrunt Validate'
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: 'envs/prod'
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      tg_version: '0.26.2'
+      aws_profile: |-
+        [gitlab-ci-aws]
+        region=us-east-1
+        output=json
+        aws_access_key_id=${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
     steps:
       - name: 'Checkout'
         uses: actions/checkout@master
@@ -53,7 +51,41 @@ jobs:
         run: terragrunt validate-all --terragrunt-non-interactive
         env:
           TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
+          TF_VAR_gitlab_token: ${{ secrets.TF_VAR_GITLAB_TOKEN }}
       - name: 'Terragrunt Plan'
         run: terragrunt plan-all --terragrunt-non-interactive
         env:
           TF_VAR_gitlab_rds_db_password: ${{ secrets.TF_VAR_GITLAB_RDS_DB_PASSWORD }}
+          TF_VAR_gitlab_token: ${{ secrets.TF_VAR_GITLAB_TOKEN }}
+
+  ansible:
+    name: 'Ansible Lint'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ansible
+    strategy:
+      matrix:
+        python-version: [3.8]
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@master
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Ansible Python dependencies
+        run: |
+          pip3 install -r requirements.txt
+
+      - name: Install Ansible requirements
+        run: |
+          ansible-galaxy install -r requirements.yml
+
+      - name: Lint Ansible
+        run: |
+          ansible-lint gitlab.yml
