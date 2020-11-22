@@ -1,6 +1,6 @@
 ---
 - name: Setup facts for future usage
-  hosts: all
+  hosts: app:gitaly:runner
   strategy: free
 
 - name: Configure app servers
